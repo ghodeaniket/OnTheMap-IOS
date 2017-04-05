@@ -8,20 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		259AE9621E95084400BCDC7A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AE9611E95084400BCDC7A /* AppDelegate.swift */; };
-		259AE9641E95084400BCDC7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AE9631E95084400BCDC7A /* ViewController.swift */; };
+		259AE9641E95084400BCDC7A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AE9631E95084400BCDC7A /* LoginViewController.swift */; };
 		259AE9671E95084400BCDC7A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 259AE9651E95084400BCDC7A /* Main.storyboard */; };
 		259AE9691E95084400BCDC7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 259AE9681E95084400BCDC7A /* Assets.xcassets */; };
 		259AE96C1E95084400BCDC7A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 259AE96A1E95084400BCDC7A /* LaunchScreen.storyboard */; };
+		259AE9741E95090100BCDC7A /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AE9731E95090100BCDC7A /* GCDBlackBox.swift */; };
+		259AE9791E950CEC00BCDC7A /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AE9781E950CEC00BCDC7A /* BorderedButton.swift */; };
+		259AE97C1E950F8A00BCDC7A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259AE97B1E950F8A00BCDC7A /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		259AE95E1E95084400BCDC7A /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		259AE9611E95084400BCDC7A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		259AE9631E95084400BCDC7A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		259AE9631E95084400BCDC7A /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		259AE9661E95084400BCDC7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		259AE9681E95084400BCDC7A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		259AE96B1E95084400BCDC7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		259AE96D1E95084400BCDC7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		259AE9731E95090100BCDC7A /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		259AE9781E950CEC00BCDC7A /* BorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
+		259AE97B1E950F8A00BCDC7A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				259AE97C1E950F8A00BCDC7A /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +47,7 @@
 			children = (
 				259AE9601E95084400BCDC7A /* OnTheMap */,
 				259AE95F1E95084400BCDC7A /* Products */,
+				259AE97A1E950F8A00BCDC7A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +62,48 @@
 		259AE9601E95084400BCDC7A /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
+				259AE9771E950CCF00BCDC7A /* View */,
 				259AE9611E95084400BCDC7A /* AppDelegate.swift */,
-				259AE9631E95084400BCDC7A /* ViewController.swift */,
+				259AE9761E95094A00BCDC7A /* Controller */,
+				259AE9751E95092800BCDC7A /* Assets */,
+				259AE96D1E95084400BCDC7A /* Info.plist */,
+				259AE9731E95090100BCDC7A /* GCDBlackBox.swift */,
+			);
+			path = OnTheMap;
+			sourceTree = "<group>";
+		};
+		259AE9751E95092800BCDC7A /* Assets */ = {
+			isa = PBXGroup;
+			children = (
 				259AE9651E95084400BCDC7A /* Main.storyboard */,
 				259AE9681E95084400BCDC7A /* Assets.xcassets */,
 				259AE96A1E95084400BCDC7A /* LaunchScreen.storyboard */,
-				259AE96D1E95084400BCDC7A /* Info.plist */,
 			);
-			path = OnTheMap;
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		259AE9761E95094A00BCDC7A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				259AE9631E95084400BCDC7A /* LoginViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		259AE9771E950CCF00BCDC7A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				259AE9781E950CEC00BCDC7A /* BorderedButton.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		259AE97A1E950F8A00BCDC7A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				259AE97B1E950F8A00BCDC7A /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,6 +139,11 @@
 					259AE95D1E95084400BCDC7A = {
 						CreatedOnToolsVersion = 8.3;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -136,7 +183,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				259AE9641E95084400BCDC7A /* ViewController.swift in Sources */,
+				259AE9641E95084400BCDC7A /* LoginViewController.swift in Sources */,
+				259AE9741E95090100BCDC7A /* GCDBlackBox.swift in Sources */,
+				259AE9791E950CEC00BCDC7A /* BorderedButton.swift in Sources */,
 				259AE9621E95084400BCDC7A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
