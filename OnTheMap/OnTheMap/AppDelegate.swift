@@ -12,7 +12,10 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var sharedSession = URLSession.shared
+    var requestToken: String? = nil
+    var sessionID: String? = nil
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -42,5 +45,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+// MARK: Create URL from Parameters
+
+extension AppDelegate {
+    
+    func udacityURLFromParameters(withPathExtension: String? = nil) -> URL {
+        
+        var components = URLComponents()
+        components.scheme = UdacityClient.Constants.ApiScheme
+        components.host = UdacityClient.Constants.ApiHost
+        components.path = UdacityClient.Constants.ApiPath + (withPathExtension ?? "")
+        return components.url!
+    }
 }
 
