@@ -56,7 +56,6 @@
                                                 <state key="normal" title="Login"/>
                                                 <connections>
                                                     <action selector="loginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fJw-Eq-Ebg"/>
-                                                    <segue destination="pJf-M0-t0h" kind="show" id="vSd-29-fVl"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -78,6 +77,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="loginButton" destination="pvv-QO-U7n" id="7Am-Jp-twl"/>
                         <outlet property="passwordTextField" destination="rFO-ku-J3D" id="Lp1-s0-UAe"/>
                         <outlet property="userNameTextField" destination="Kqg-a5-iT1" id="7lI-ef-8mF"/>
                     </connections>
@@ -89,7 +89,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="G36-z4-clE">
             <objects>
-                <tabBarController id="pJf-M0-t0h" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="StudentLocationsMapViewController" id="pJf-M0-t0h" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="RI1-j2-c0O">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
