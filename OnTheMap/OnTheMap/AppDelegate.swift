@@ -52,12 +52,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     
-    func udacityURLFromParameters(withPathExtension: String? = nil) -> URL {
+    func udacityURLFromParameters(forParseClient parseClient: Bool, parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
-        components.scheme = UdacityClient.Constants.ApiScheme
-        components.host = UdacityClient.Constants.ApiHost
-        components.path = UdacityClient.Constants.ApiPath + (withPathExtension ?? "")
+        components.scheme = parseClient ? UdacityParseClient.Constants.ApiScheme : UdacityClient.Constants.ApiScheme
+        components.host = parseClient ? UdacityParseClient.Constants.ApiHost : UdacityClient.Constants.ApiHost
+        components.path = (parseClient ? UdacityParseClient.Constants.ApiPath : UdacityClient.Constants.ApiPath) + (withPathExtension ?? "")
+        
+        components.queryItems = [URLQueryItem]()
+        
+        for (key, value) in parameters {
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            components.queryItems!.append(queryItem)
+        }
+        
         return components.url!
     }
 }

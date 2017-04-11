@@ -52,7 +52,8 @@ class LoginViewController: UIViewController {
         
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: appDelegate.udacityURLFromParameters(withPathExtension: "/session"))
+        let parameters = [String: AnyObject]()
+        let request = NSMutableURLRequest(url: appDelegate.udacityURLFromParameters(forParseClient: false, parameters: parameters, withPathExtension: "/session"))
         /* 2/3. Build the URL, Configure the request */
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -71,7 +72,7 @@ class LoginViewController: UIViewController {
             }
             
             guard (error == nil) else {
-                print("Error while logging in user \(error)")
+                print("Error while logging in user \(String(describing: error))")
                 displayError("There was an error connecting to Udacity API")
                 return
             }
@@ -141,7 +142,7 @@ class LoginViewController: UIViewController {
     private func completeLogin() {
         performUIUpdatesOnMain {
             self.setUIEnabled(true)
-            let controller = self.storyboard!.instantiateViewController(withIdentifier: "StudentLocationsMapViewController") as! UITabBarController
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "OnTheMapNavigationController") as! UINavigationController
             self.present(controller, animated: true, completion: nil)
         }
     }

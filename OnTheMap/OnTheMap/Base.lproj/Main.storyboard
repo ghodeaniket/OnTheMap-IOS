@@ -86,28 +86,45 @@
             </objects>
             <point key="canvasLocation" x="117.59999999999999" y="122.78860569715144"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="tB6-bC-GQ6">
+            <objects>
+                <navigationController storyboardIdentifier="OnTheMapNavigationController" id="5OF-H0-fKT" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Xxe-hB-8Hp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="pJf-M0-t0h" kind="relationship" relationship="rootViewController" id="sVG-2f-seu"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l36-oe-XHA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="945" y="123"/>
+        </scene>
+        <!--On The Map-->
         <scene sceneID="G36-z4-clE">
             <objects>
                 <tabBarController storyboardIdentifier="StudentLocationsMapViewController" id="pJf-M0-t0h" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="On The Map" id="Qml-Xo-rWl"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="RI1-j2-c0O">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="bnX-qo-mVc" kind="relationship" relationship="viewControllers" id="0XV-cV-hlX"/>
-                        <segue destination="XdQ-ed-Xcj" kind="relationship" relationship="viewControllers" id="QlE-Au-ViA"/>
+                        <segue destination="94O-Dj-KZc" kind="relationship" relationship="viewControllers" id="BFw-c4-4Pl"/>
+                        <segue destination="e5G-h0-V07" kind="relationship" relationship="viewControllers" id="u9U-gh-jaw"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jyh-zn-e3H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="822" y="123"/>
+            <point key="canvasLocation" x="1753" y="123"/>
         </scene>
-        <!--View Controller-->
+        <!--Student Info Map View Controller-->
         <scene sceneID="89v-BF-scM">
             <objects>
-                <viewController id="94O-Dj-KZc" sceneMemberID="viewController">
+                <viewController id="94O-Dj-KZc" customClass="StudentInfoMapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HlE-Y7-mbt"/>
                         <viewControllerLayoutGuide type="bottom" id="p1y-4O-NJU"/>
@@ -118,6 +135,9 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zeU-Bd-G5e">
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <connections>
+                                    <outlet property="delegate" destination="94O-Dj-KZc" id="IbD-ZP-XTH"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -128,41 +148,111 @@
                             <constraint firstAttribute="trailingMargin" secondItem="zeU-Bd-G5e" secondAttribute="trailing" constant="-16" id="lqL-ik-M82"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="icon_mapview-deselected" selectedImage="icon_mapview-selected" id="OVa-WR-x63"/>
                     <navigationItem key="navigationItem" id="YnU-Nm-CTY"/>
+                    <connections>
+                        <outlet property="mapView" destination="zeU-Bd-G5e" id="nQg-k9-QMZ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X26-Ud-FQT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2623.1999999999998" y="-129.08545727136433"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="tHz-uj-pov">
+        <!--Post Information-->
+        <scene sceneID="agx-Ac-g5t">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bnX-qo-mVc" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" image="icon_mapview-deselected" selectedImage="icon_mapview-selected" id="Zfq-zc-MXf"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9pw-JO-XYT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="94O-Dj-KZc" kind="relationship" relationship="rootViewController" id="LaA-HC-vJL"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="045-A6-e7B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="Y9s-lM-i0f" customClass="PostInformationViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kz0-l3-oQJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="UPC-6S-IOc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mqj-Gw-ndr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1gT-Rt-99p">
+                                <rect key="frame" x="0.0" y="20" width="375" height="639"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rne-BR-lPJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Where are you ">
+                                                <attributes>
+                                                    <font key="NSFont" size="36" name="HelveticaNeue"/>
+                                                    <font key="NSOriginalFont" size="35" name="HelveticaNeue"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="studying">
+                                                <attributes>
+                                                    <font key="NSFont" size="36" name="HelveticaNeue"/>
+                                                    <font key="NSOriginalFont" size="58" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content=" today">
+                                                <attributes>
+                                                    <font key="NSFont" size="36" name="HelveticaNeue"/>
+                                                    <font key="NSOriginalFont" size="35" name="HelveticaNeue"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your location here" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wv7-HE-oVJ">
+                                        <rect key="frame" x="0.0" y="213" width="375" height="213"/>
+                                        <color key="backgroundColor" red="0.0" green="0.65265710361738194" blue="0.95254996827411165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TT9-tL-KaF">
+                                        <rect key="frame" x="0.0" y="426" width="375" height="213"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRu-bP-10Y">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="213"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OOR-aK-mK2" customClass="BorderedButton" customModule="OnTheMap" customModuleProvider="target">
+                                                        <rect key="frame" x="114" y="89" width="147" height="36"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                        <state key="normal" title="Find on the Map"/>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="OOR-aK-mK2" firstAttribute="centerY" secondItem="pRu-bP-10Y" secondAttribute="centerY" id="e8R-p7-Bm9"/>
+                                                    <constraint firstItem="OOR-aK-mK2" firstAttribute="centerX" secondItem="pRu-bP-10Y" secondAttribute="centerX" id="laq-5E-2qt"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1gT-Rt-99p" firstAttribute="top" secondItem="kz0-l3-oQJ" secondAttribute="bottom" id="9IB-Rd-GcN"/>
+                            <constraint firstItem="UPC-6S-IOc" firstAttribute="top" secondItem="1gT-Rt-99p" secondAttribute="bottom" constant="8" id="CvF-hO-uDc"/>
+                            <constraint firstItem="1gT-Rt-99p" firstAttribute="leading" secondItem="mqj-Gw-ndr" secondAttribute="leading" id="OsQ-4j-NIw"/>
+                            <constraint firstAttribute="trailing" secondItem="1gT-Rt-99p" secondAttribute="trailing" id="zgX-ck-PAa"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Post Information" id="ZjZ-hM-hIC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Eee-UN-d4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1684" y="-129.08545727136433"/>
+            <point key="canvasLocation" x="4490" y="18"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Student Info Table View Controller-->
         <scene sceneID="BNv-yn-8va">
             <objects>
-                <tableViewController id="e5G-h0-V07" sceneMemberID="viewController">
+                <tableViewController id="e5G-h0-V07" customClass="StudentInfoTableViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cGG-DK-QXd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="F6A-Tg-dKy">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentInformation" id="F6A-Tg-dKy">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F6A-Tg-dKy" id="JNy-qM-oJ2">
@@ -176,30 +266,12 @@
                             <outlet property="delegate" destination="e5G-h0-V07" id="zvl-T1-N2l"/>
                         </connections>
                     </tableView>
+                    <tabBarItem key="tabBarItem" title="" image="icon_listview-deselected" selectedImage="icon_listview-selected" id="224-55-3xb"/>
                     <navigationItem key="navigationItem" id="9pP-HC-Elk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="27m-XB-GTA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2623.1999999999998" y="551.87406296851577"/>
-        </scene>
-        <!--Item-->
-        <scene sceneID="pXC-mT-oZp">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XdQ-ed-Xcj" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" image="icon_listview-deselected" selectedImage="icon_listview-selected" id="BZm-2y-rO2"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dlK-2A-F5x">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="e5G-h0-V07" kind="relationship" relationship="rootViewController" id="Np6-PM-o8E"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xA1-qI-iBU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1684" y="551.87406296851577"/>
         </scene>
     </scenes>
     <resources>
