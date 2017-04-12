@@ -47,96 +47,19 @@ class LoginViewController: UIViewController {
     
     private func loginUser() {
         
-        let userName = userNameTextField.text
-        let password = passwordTextField.text
+        //        let userName = userNameTextField.text
+        //        let password = passwordTextField.text
         
-        
-        /* 2/3. Build the URL, Configure the request */
-        let parameters = [String: AnyObject]()
-        let request = NSMutableURLRequest(url: appDelegate.udacityURLFromParameters(forParseClient: false, parameters: parameters, withPathExtension: "/session"))
-        /* 2/3. Build the URL, Configure the request */
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"udacity\": {\"username\": \"aniket.ghode@gmail.com\", \"password\": \"cue51&mint\"}}".data(using: String.Encoding.utf8)
-        /* 4. Make the request */
-        let task = appDelegate.sharedSession.dataTask(with: request as URLRequest) { (data, response, error) in
-            
-            func displayError(_ errorMessage: String) {
-                print(errorMessage)
-                
-                performUIUpdatesOnMain {
-                    self.showError(errorMessage)
-                    self.setUIEnabled(true)
-                }
-            }
-            
-            guard (error == nil) else {
-                print("Error while logging in user \(String(describing: error))")
-                displayError("There was an error connecting to Udacity API")
-                return
-            }
-            
-            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                guard statusCode >= 200 && statusCode <= 299 else{
-                    if statusCode == 403 {
-                        print("Error while logging in user, (Invalid Credentials.")
-                        displayError("Account doesn't exist or invalid credentials. Please try again.")
-                    } else {
-                        print("Error while logging in user, (Unknown Error.")
-                        displayError("Couldn't login, Please try again.")
-                    }
-                    return
-                }
+        UdacityClient.sharedInstance().authenticateUser(userName: "aniket.ghode@gmail.com", password: "cue51&mint") { (success, errorString) in
+            if success {
+                self.completeLogin()
             } else {
-                print("Error while logging in user, (Unknown Error.")
-                displayError("Couldn't login, Please try again.")
+                performUIUpdatesOnMain {
+                    self.showError(errorString!)
+                }
             }
-            
-            guard let data = data else {
-                print("Error while logging in user, (No Data returned).")
-                displayError("Couldn't login, Please try again.")
-                return
-            }
-            
-            let range = Range(5 ..< data.count)
-            let newData = data.subdata(in: range) /* subset response data! */
-            
-            var parsedResult : [String:AnyObject]!
-            
-            do {
-                parsedResult = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as! [String: AnyObject]
-            }catch {
-                displayError("Could not parse data \(data)")
-                return
-            }
-            
-            guard let accountInfo = parsedResult[UdacityClient.JSONResponseKeys.Account] as? [String: AnyObject]? else {
-                print("Login failed. No Account information.")
-                displayError("Couldn't login, Please try again.")
-                return
-            }
-            
-            guard let userKey = accountInfo![UdacityClient.JSONResponseKeys.Key] as? String? else {
-                print("Coundn't find key '\(UdacityClient.JSONResponseKeys.Key)' in '\(parsedResult)'")
-                displayError("Couldn't login, Please try again.")
-                return
-            }
-            
-            self.appDelegate.accountID = userKey
-            
-            guard let sessionInfo = parsedResult[UdacityClient.JSONResponseKeys.Session] as? [String: AnyObject]?, let sessionID = sessionInfo![UdacityClient.JSONResponseKeys.sessionID] as? String? else {
-                print("Coundn't find key '\(UdacityClient.JSONResponseKeys.sessionID)' in '\(parsedResult)'")
-                displayError("Couldn't login, Please try again.")
-                return
-            }
-            
-            self.appDelegate.sessionID = sessionID
-            self.completeLogin()
-            print(parsedResult)
+            self.setUIEnabled(true)
         }
-        
-        task.resume()
     }
     
     private func completeLogin() {

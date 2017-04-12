@@ -19,8 +19,4 @@ class ManagerTabViewController: UITabBarController {
     @IBAction func logout(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
-    @IBAction func postStudentInformation(_ sender: Any) {
-        performSegue(withIdentifier: "ShowInformationPostingView", sender: self)
-    }
 }

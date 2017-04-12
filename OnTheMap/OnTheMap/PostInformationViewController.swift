@@ -10,14 +10,10 @@ import UIKit
 
 class PostInformationViewController: UIViewController {
 
+    var location: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationItem.setHidesBackButton(false, animated: true)
 
     }
-    
-    @IBAction func findLocationOnMap(_ sender: Any) {
-        performSegue(withIdentifier: "findLocation", sender: self)
-    }    
 }
