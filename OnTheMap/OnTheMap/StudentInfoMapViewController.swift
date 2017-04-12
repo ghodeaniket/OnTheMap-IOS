@@ -20,11 +20,11 @@ class StudentInfoMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // create and set the logout button
-        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
-        
-        // create and set add information Button
-        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(postStudentInformation))
+//        // create and set the logout button
+//        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
+//        
+//        // create and set add information Button
+//        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(postStudentInformation))
         
         appDelegate = UIApplication.shared.delegate as! AppDelegate
     }
@@ -97,16 +97,7 @@ class StudentInfoMapViewController: UIViewController {
         
     }
     
-    // MARK: Logout
-    
-    func logout() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func postStudentInformation() {
-        let postInformationController = storyboard?.instantiateViewController(withIdentifier: "PostInformationViewController") as! UINavigationController
-        present(postInformationController, animated: true, completion: nil)
-    }
+ 
     
     // MARK: Helpers
     

@@ -13,6 +13,8 @@
 		252D4E131E9B555F00470B90 /* UdacityParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E121E9B555F00470B90 /* UdacityParseConstants.swift */; };
 		252D4E151E9B5F7800470B90 /* UdacityStudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E141E9B5F7800470B90 /* UdacityStudentInformation.swift */; };
 		252D4E171E9CE78500470B90 /* PostInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E161E9CE78500470B90 /* PostInformationViewController.swift */; };
+		252D4E191E9DF9B500470B90 /* FindLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E181E9DF9B500470B90 /* FindLocationViewController.swift */; };
+		252D4E1B1E9DFB9D00470B90 /* ManagerTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E1A1E9DFB9D00470B90 /* ManagerTabViewController.swift */; };
 		256C86E01E96238E004B2690 /* UdacityClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256C86DF1E96238E004B2690 /* UdacityClient.swift */; };
 		256C86E21E9623AE004B2690 /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 256C86E11E9623AE004B2690 /* UdacityConstants.swift */; };
 		259AE9621E95084400BCDC7A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259AE9611E95084400BCDC7A /* AppDelegate.swift */; };
@@ -32,6 +34,8 @@
 		252D4E121E9B555F00470B90 /* UdacityParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityParseConstants.swift; sourceTree = "<group>"; };
 		252D4E141E9B5F7800470B90 /* UdacityStudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudentInformation.swift; sourceTree = "<group>"; };
 		252D4E161E9CE78500470B90 /* PostInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostInformationViewController.swift; sourceTree = "<group>"; };
+		252D4E181E9DF9B500470B90 /* FindLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindLocationViewController.swift; sourceTree = "<group>"; };
+		252D4E1A1E9DFB9D00470B90 /* ManagerTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerTabViewController.swift; sourceTree = "<group>"; };
 		256C86DF1E96238E004B2690 /* UdacityClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityClient.swift; sourceTree = "<group>"; };
 		256C86E11E9623AE004B2690 /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		259AE95E1E95084400BCDC7A /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,6 +146,8 @@
 				252D4E0C1E9B51FA00470B90 /* StudentInfoMapViewController.swift */,
 				252D4E0E1E9B520E00470B90 /* StudentInfoTableViewController.swift */,
 				252D4E161E9CE78500470B90 /* PostInformationViewController.swift */,
+				252D4E181E9DF9B500470B90 /* FindLocationViewController.swift */,
+				252D4E1A1E9DFB9D00470B90 /* ManagerTabViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -239,9 +245,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				252D4E191E9DF9B500470B90 /* FindLocationViewController.swift in Sources */,
 				252D4E0D1E9B51FA00470B90 /* StudentInfoMapViewController.swift in Sources */,
 				252D4E171E9CE78500470B90 /* PostInformationViewController.swift in Sources */,
 				252D4E0F1E9B520E00470B90 /* StudentInfoTableViewController.swift in Sources */,
+				252D4E1B1E9DFB9D00470B90 /* ManagerTabViewController.swift in Sources */,
 				256C86E01E96238E004B2690 /* UdacityClient.swift in Sources */,
 				252D4E151E9B5F7800470B90 /* UdacityStudentInformation.swift in Sources */,
 				259AE9641E95084400BCDC7A /* LoginViewController.swift in Sources */,
