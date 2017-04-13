@@ -24,13 +24,16 @@ class UdacityClient: NSObject {
     
     // MARK: GET
     
-    func taskForGETMethod(_ method: String, parameters: [String:AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
-        
-        /* 1. Set the parameters */
-        var parametersWithApiKey = parameters
+    func taskForGETMethod(forParseClient parseClient: Bool, method: String, parameters: [String:AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: tmdbURLFromParameters(parametersWithApiKey, withPathExtension: method))
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(forParseClient: parseClient, parameters: parameters, withPathExtension: method))
+        
+        if(parseClient) {
+            /* 2/3. Build the URL, Configure the request */
+            request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+            request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        }
         
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
@@ -58,10 +61,14 @@ class UdacityClient: NSObject {
                 sendError("No data was returned by the request!")
                 return
             }
-            // NEED TO SKIP THE FIRST 5 CHARACTERS OF THE RESPONSE
-            let range = Range(5 ..< data.count)
-            let newData = data.subdata(in: range) /* subset response data! */
             
+            var newData = data
+            
+            if(!parseClient) {
+                // NEED TO SKIP THE FIRST 5 CHARACTERS OF THE RESPONSE
+                let range = Range(5 ..< data.count)
+                newData = data.subdata(in: range) /* subset response data! */
+            }
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForGET)
         }
@@ -74,13 +81,13 @@ class UdacityClient: NSObject {
     
     // MARK: POST
     
-    func taskForPOSTMethod(_ method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForPOSTMethod(forParseClient parseClient: Bool, method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         /* 1. Set the parameters */
         var parametersWithApiKey = parameters
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: tmdbURLFromParameters(parametersWithApiKey, withPathExtension: method))
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(forParseClient: parseClient, parameters: parameters, withPathExtension: method))
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -113,11 +120,13 @@ class UdacityClient: NSObject {
                 return
             }
             
-            // NEED TO SKIP THE FIRST 5 CHARACTERS OF THE RESPONSE
+            var newData = data
             
-            let range = Range(5 ..< data.count)
-            let newData = data.subdata(in: range) /* subset response data! */
-            
+            if(!parseClient) {
+                // NEED TO SKIP THE FIRST 5 CHARACTERS OF THE RESPONSE
+                let range = Range(5 ..< data.count)
+                newData = data.subdata(in: range) /* subset response data! */
+            }
             /* 5/6. Parse the data and use the data (happens in completion handler) */
             self.convertDataWithCompletionHandler(newData, completionHandlerForConvertData: completionHandlerForPOST)
         }
@@ -154,12 +163,29 @@ class UdacityClient: NSObject {
     }
     
     // create a URL from parameters
-    private func tmdbURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
+    private func udacityURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
         components.scheme = Constants.ApiScheme
         components.host = Constants.ApiHost
         components.path = Constants.ApiPath + (withPathExtension ?? "")
+        components.queryItems = [URLQueryItem]()
+        
+        for (key, value) in parameters {
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            components.queryItems!.append(queryItem)
+        }
+        
+        return components.url!
+    }
+    
+    func udacityURLFromParameters(forParseClient parseClient: Bool, parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
+        
+        var components = URLComponents()
+        components.scheme = parseClient ? UdacityParseClient.Constants.ApiScheme : UdacityClient.Constants.ApiScheme
+        components.host = parseClient ? UdacityParseClient.Constants.ApiHost : UdacityClient.Constants.ApiHost
+        components.path = (parseClient ? UdacityParseClient.Constants.ApiPath : UdacityClient.Constants.ApiPath) + (withPathExtension ?? "")
+        
         components.queryItems = [URLQueryItem]()
         
         for (key, value) in parameters {

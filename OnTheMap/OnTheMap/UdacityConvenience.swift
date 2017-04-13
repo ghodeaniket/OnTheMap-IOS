@@ -43,7 +43,8 @@ extension UdacityClient {
         let method = Methods.Session
         
         let jsonBody = "{\"\(JSONBodyKeys.Udacity)\": {\"\(JSONBodyKeys.UserName)\": \"\(userName)\", \"\(JSONBodyKeys.Password)\": \"\(password)\"}}"
-        _ = taskForPOSTMethod(method, parameters: parameters, jsonBody: jsonBody, completionHandlerForPOST: { (results, error) in
+        
+        _ = taskForPOSTMethod(forParseClient: false, method: method, parameters: parameters, jsonBody: jsonBody, completionHandlerForPOST: { (results, error) in
             if let error = error {
                 print(error)
                 completionHandlerForSession(false, nil, nil, "Login failed (Post Session to Udacity)")
@@ -78,7 +79,7 @@ extension UdacityClient {
         var mutableMethod: String = Methods.PublicData
         mutableMethod = substituteKeyInMethod(mutableMethod, key: URLKeys.UserID, value: accountKey!)!
         
-        _ = taskForGETMethod(mutableMethod, parameters: parameters, completionHandlerForGET: { (results, error) in
+        _ = taskForGETMethod(forParseClient: false, method: mutableMethod, parameters: parameters, completionHandlerForGET: { (results, error) in
             if let error = error {
                 print(error)
                 completionHandlerForPublicData(false, nil, nil, "Login failed (Public Data from Udacity)")
@@ -103,6 +104,28 @@ extension UdacityClient {
             }
         })
         
+    }
+    
+    func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ success: Bool, _ studentInformations: [UdacityStudentInformation]?, _ errorString: String?) -> Void) {
+        let parameters = ["limit": 100, "order": "updatedAt"] as [String : AnyObject]
+        
+        let method = Methods.StudentLocation
+        
+        _ = taskForGETMethod(forParseClient: true, method: method, parameters: parameters, completionHandlerForGET: { (results, error) in
+            if let error = error {
+                print(error)
+                completionHandlerForStudentLocations(false, nil, "Error while retrieving Student Locations")
+            } else {
+                if let results = results?[UdacityParseClient.JSONResponseKeys.StudentInformationResults] as? [[String: AnyObject]] {
+                    let studentsInfo = UdacityStudentInformation.studentInformationFromResults(results)
+                    completionHandlerForStudentLocations(true, studentsInfo, nil)
+                } else {
+                    print("Could not find \(UdacityParseClient.JSONResponseKeys.StudentInformationResults) in \(results)")
+                    completionHandlerForStudentLocations(false, nil, "Error while retrieving Student Locations")
+                }
+                
+            }
+        })
     }
 
 }

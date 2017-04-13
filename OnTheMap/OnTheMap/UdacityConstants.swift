@@ -24,6 +24,8 @@ extension UdacityClient {
     struct Methods {
         static let Session = "/session"
         static let PublicData = "/users/{id}"
+        
+        static let StudentLocation = "/StudentLocation"
     }
     
     // MARK: JSON Response Keys
