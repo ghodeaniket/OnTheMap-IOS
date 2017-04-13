@@ -229,7 +229,7 @@
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                         <state key="normal" title="Find on the Map"/>
                                                         <connections>
-                                                            <segue destination="LfV-PU-e6l" kind="show" id="qd8-j3-RKH"/>
+                                                            <action selector="findLocationOnMap:" destination="Y9s-lM-i0f" eventType="touchUpInside" id="jTU-dt-YW1"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -253,6 +253,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Post Information" id="ZjZ-hM-hIC"/>
+                    <connections>
+                        <outlet property="locationTextField" destination="Wv7-HE-oVJ" id="dkH-RJ-dZk"/>
+                        <segue destination="LfV-PU-e6l" kind="show" identifier="findLocation" id="ceL-UQ-uAY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Eee-UN-d4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -338,6 +342,9 @@
                             <constraint firstAttribute="trailing" secondItem="saW-Lp-PDz" secondAttribute="trailing" id="nA7-zj-URG"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="locationTextField" destination="ArS-KY-vRF" id="GVi-qz-lun"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Usm-mF-pbl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -10,6 +10,7 @@ import UIKit
 
 class FindLocationViewController: UIViewController {
 
+    @IBOutlet weak var locationTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
