@@ -35,6 +35,8 @@ class UdacityClient: NSObject {
             request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         }
         
+        
+        
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
@@ -81,17 +83,31 @@ class UdacityClient: NSObject {
     
     // MARK: POST
     
-    func taskForPOSTMethod(forParseClient parseClient: Bool, method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForPOSTMethod(forParseClient parseClient: Bool, method: String, parameters: [String:AnyObject]?, jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         /* 1. Set the parameters */
         var parametersWithApiKey = parameters
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: udacityURLFromParameters(forParseClient: parseClient, parameters: parameters, withPathExtension: method))
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(forParseClient: parseClient, parameters: parameters!, withPathExtension: method))
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+//        request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+        
+        if let parameters = parameters {
+            do {
+                let httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+                request.httpBody = httpBody
+            } catch {
+//                let errorResponse = ErrorResponse(code: "", error: "Unexpected error")
+//                let userInfo = [NSLocalizedDescriptionKey : errorResponse]
+                let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(parameters)'"]
+                completionHandlerForPOST(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+
+            }
+        }
+        
         
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in

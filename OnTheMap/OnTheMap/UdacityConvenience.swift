@@ -39,12 +39,17 @@ extension UdacityClient {
     
     private func postUserSession(_ userName: String, _ password: String, _ completionHandlerForSession: @escaping (_ success: Bool, _ sessionId: String?, _ accountKey: String?, _ errorString: String?) -> Void) {
         
-        let parameters = [String: AnyObject]()
+        let parameters = [
+            "udacity": [
+                "username": userName,
+                "password": password
+            ]
+        ]
         let method = Methods.Session
         
         let jsonBody = "{\"\(JSONBodyKeys.Udacity)\": {\"\(JSONBodyKeys.UserName)\": \"\(userName)\", \"\(JSONBodyKeys.Password)\": \"\(password)\"}}"
         
-        _ = taskForPOSTMethod(forParseClient: false, method: method, parameters: parameters, jsonBody: jsonBody, completionHandlerForPOST: { (results, error) in
+        _ = taskForPOSTMethod(forParseClient: false, method: method, parameters: parameters as [String : AnyObject], jsonBody: jsonBody, completionHandlerForPOST: { (results, error) in
             if let error = error {
                 print(error)
                 completionHandlerForSession(false, nil, nil, "Login failed (Post Session to Udacity)")
@@ -72,6 +77,22 @@ extension UdacityClient {
                 }
             }
         })
+    }
+    
+    private func postStudentLocation(_ mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForPostingLocation: (_ success: Bool, _ errorString: String?) ->Void) {
+        let parameters: [String: Any] = [
+            "uniqueKey" : accountKey,
+            "firstName": firstName,
+            "lastName": lastName,
+            "mapString": mapString,
+            "mediaURL": mediaURL,
+            "latitude": latitude,
+            "longitude": longitude,
+            ]
+        let method = Methods.StudentLocation
+        
+        
+        
     }
     
     private func getStudentPublicData(_ accountKey: String?, _ completionHandlerForPublicData: @escaping (_ success: Bool, _ firstName: String?, _ lastName: String?, _ errorString: String?) -> Void){
