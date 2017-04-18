@@ -47,8 +47,6 @@ extension UdacityClient {
 //        let parameters = [String: AnyObject]()
         let method = Methods.Session
         
-        let jsonBody = "{\"\(JSONBodyKeys.Udacity)\": {\"\(JSONBodyKeys.UserName)\": \"\(userName)\", \"\(JSONBodyKeys.Password)\": \"\(password)\"}}"
-        
         let parameters = [
             "udacity": [
                 "username": userName,
@@ -56,7 +54,7 @@ extension UdacityClient {
             ]
         ]
         
-        _ = taskForPOSTMethod(forParseClient: false, method: method, parameters: parameters as [String : AnyObject], jsonBody: jsonBody, completionHandlerForPOST: { (results, error) in
+        _ = taskForPOSTMethod(forParseClient: false, method: method, parameters: parameters as [String : AnyObject], completionHandlerForPOST: { (results, error) in
             if let error = error {
                 print(error)
                 completionHandlerForSession(false, nil, nil, "Login failed (Post Session to Udacity)")
@@ -128,11 +126,11 @@ extension UdacityClient {
                 print(error)
                 completionHandlerForStudentLocations(false, nil, "Error while retrieving Student Locations")
             } else {
-                if let results = results?[UdacityParseClient.JSONResponseKeys.StudentInformationResults] as? [[String: AnyObject]] {
+                if let results = results?[JSONResponseKeys.StudentInformationResults] as? [[String: AnyObject]] {
                     let studentsInfo = UdacityStudentInformation.studentInformationFromResults(results)
                     completionHandlerForStudentLocations(true, studentsInfo, nil)
                 } else {
-                    print("Could not find \(UdacityParseClient.JSONResponseKeys.StudentInformationResults) in \(String(describing: results))")
+                    print("Could not find \(JSONResponseKeys.StudentInformationResults) in \(String(describing: results))")
                     completionHandlerForStudentLocations(false, nil, "Error while retrieving Student Locations")
                 }
                 
@@ -150,14 +148,15 @@ extension UdacityClient {
                 print(error)
                 completionHandlerForStudentLocation(false, "Error while retrieving Student Locations")
             } else {
-                if let results = results?[UdacityParseClient.JSONResponseKeys.StudentInformationResults] as? [[String: AnyObject]] {
+                if let results = results?[JSONResponseKeys.StudentInformationResults] as? [[String: AnyObject]] {
                     let studentsInfo = UdacityStudentInformation.studentInformationFromResults(results)
                     if studentsInfo.count > 0 {
                         self.hasAddedLocation = true
+                        self.objectID = studentsInfo[0].objectID
                     }
                     completionHandlerForStudentLocation(true, nil)
                 } else {
-                    print("Could not find \(UdacityParseClient.JSONResponseKeys.StudentInformationResults) in \(String(describing: results))")
+                    print("Could not find \(JSONResponseKeys.StudentInformationResults) in \(String(describing: results))")
                     completionHandlerForStudentLocation(false, "Error while retrieving Student Locations")
                 }
                 
@@ -165,7 +164,7 @@ extension UdacityClient {
         })
     }
     
-    func postStudentLocation(mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForPostingLocation: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+    func saveStudentLocation(shouldUpdateLocation: Bool,mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForSavingLocation: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
         let parameters = [
             "uniqueKey" : accountKey!,
@@ -177,15 +176,33 @@ extension UdacityClient {
             "longitude": longitude,
             ] as [String : Any]
         
-        let method = Methods.StudentLocation
+        var mutableMethod = Methods.StudentLocation
         
-        _ = taskForPOSTMethod(forParseClient: true, method: method, parameters: parameters as [String: AnyObject], jsonBody: "", completionHandlerForPOST: { (results, error) in
-            if let _ = results?[JSONResponseKeys.ObjectID] as? String {
-                completionHandlerForPostingLocation(true, nil)
-            } else {
-                print("Could not find \(JSONResponseKeys.ObjectID) in \(String(describing: results))")
-                completionHandlerForPostingLocation(false, "Error while retrieving Student Locations")
-            }
-        })        
+        
+        if shouldUpdateLocation {
+            
+            mutableMethod = Methods.UpdateStudentLocation
+            mutableMethod = substituteKeyInMethod(mutableMethod, key: URLKeys.UserID, value: objectID!)!
+            _ = taskForPUTMethod(forParseClient: true, method: mutableMethod, parameters: parameters as [String: AnyObject], completionHandlerForPUT: { (results, error) in
+                if let _ = results?[UdacityStudentInformation.StudentInformationKeys.UpdatedAt] as? String {
+                    completionHandlerForSavingLocation(true, nil)
+                } else {
+                    print("Could not find \(UdacityStudentInformation.StudentInformationKeys.UpdatedAt) in \(String(describing: results))")
+                    completionHandlerForSavingLocation(false, "Error while Updating Student Locations")
+                }
+            })
+        
+            
+        } else {
+            _ = taskForPOSTMethod(forParseClient: true, method: mutableMethod, parameters: parameters as [String: AnyObject], completionHandlerForPOST: { (results, error) in
+                if let _ = results?[UdacityStudentInformation.StudentInformationKeys.ObjectID] as? String {
+                    completionHandlerForSavingLocation(true, nil)
+                } else {
+                    print("Could not find \(UdacityStudentInformation.StudentInformationKeys.ObjectID) in \(String(describing: results))")
+                    completionHandlerForSavingLocation(false, "Error while Saving Student Locations")
+                }
+            })
+        }
+        
     }
 }

@@ -21,11 +21,24 @@ extension UdacityClient {
         static let AuthorizationURL = "https://www.udacity.com/api"
     }
     
+    struct ParseConstants {
+        
+        // MARK: URLs
+        static let ApiScheme = "https"
+        static let ApiHost = "parse.udacity.com"
+        static let ApiPath = "/parse/classes"
+        
+        static let ParseApplicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
+        static let RestApiKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+
+    }
+    
     struct Methods {
         static let Session = "/session"
         static let PublicData = "/users/{id}"
         
         static let StudentLocation = "/StudentLocation"
+        static let UpdateStudentLocation = "/StudentLocation/{id}"
     }
     
     // MARK: JSON Response Keys
@@ -52,7 +65,9 @@ extension UdacityClient {
         static let LastName = "last_name"
         static let User = "user"
         
-        static let ObjectID = "objectId"
+        // Results
+        
+        static let StudentInformationResults = "results"
     }
     
     // MARK: URL Keys

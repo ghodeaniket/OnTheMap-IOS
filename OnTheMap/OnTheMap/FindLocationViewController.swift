@@ -11,21 +11,60 @@ import MapKit
 
 class FindLocationViewController: UIViewController {
 
-    var mapAnnotation: CLPlacemark!
+    // MARK: Properties
+
+    var mapAnnotation: CLPlacemark?
+    var mapCooardinates: CLLocationCoordinate2D!
+    var placeDescription: String!
+    
+    // MARK: Outlets
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var locationDescriptionTextfield: UITextField!
-    @IBOutlet weak var locationTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addMapLocations()
-        centerMapOnLocation(location: mapAnnotation.location!)
+        if let mapAnnotation = mapAnnotation {
+            let location = mapAnnotation.location
+            placeDescription = "\(mapAnnotation.name!), \(mapAnnotation.administrativeArea!)"
+            mapCooardinates = location?.coordinate
+            addMapLocations()
+            centerMapOnLocation(location: mapAnnotation.location!)
+        }
     }
     
     @IBAction func saveLocation(_ sender: Any) {
-        self.navigationController?.popToRootViewController(animated: true)
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
+        
+        guard let urlString = locationDescriptionTextfield.text, let urlToOpen = URL(string: urlString) else {
+            ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+            print("No url entered")
+            self.showError("No URL Entered!")
+            return
+        }
+        if UIApplication.shared.canOpenURL(urlToOpen) {
+        
+            let hasAddedLocation = UdacityClient.sharedInstance().hasAddedLocation
+
+            UdacityClient.sharedInstance().saveStudentLocation(shouldUpdateLocation: hasAddedLocation, mapString: placeDescription, mediaURL: locationDescriptionTextfield.text!, latitude: mapCooardinates.latitude, longitude: mapCooardinates.longitude) { (success, errorString) in
+                performUIUpdatesOnMain {
+                    ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                    if success {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    } else {
+                        if let errorString = errorString {
+                            self.showError(errorString)
+                        } else {
+                            self.showError("Unknown Error!")
+                        }
+                    }
+                }
+            }
+        } else {
+            ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+            showError("Please enter a valid URL")
+        }
     }
     
     func centerMapOnLocation(location: CLLocation) {
@@ -48,7 +87,7 @@ class FindLocationViewController: UIViewController {
         
         
         // The lat and long are used to create a CLLocationCoordinates2D instance.
-        let coordinate = mapAnnotation.location?.coordinate
+        let coordinate = mapAnnotation?.location?.coordinate
         
         // Here we create the annotation and set its coordiate, title, and subtitle properties
         let annotation = MKPointAnnotation()
@@ -64,6 +103,15 @@ class FindLocationViewController: UIViewController {
         // When the array is complete, we add the annotations to the map.
         self.mapView.addAnnotations(annotations)
         
+    }
+    
+    private func showError(_ errorMessage: String) {
+        let alert = UIAlertController(title: "On The Map", message: errorMessage, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default) { (alertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -101,6 +149,20 @@ extension FindLocationViewController: MKMapViewDelegate {
             }
         }
     }
+}
+
+//MARK:- TextField Delegate
+extension FindLocationViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.text = ""
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
 }
 
 

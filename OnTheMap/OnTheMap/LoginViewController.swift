@@ -12,7 +12,7 @@ class LoginViewController: UIViewController {
 
     // MARK: Properties
     
-    var appDelegate: AppDelegate!
+    var keyboardOnScreen = false
     
     // MARK: IBOutlets
     
@@ -35,39 +35,52 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // get the app delegate
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        subscribeToNotification(.UIKeyboardWillShow, selector: #selector(keyboardWillShow))
+        subscribeToNotification(.UIKeyboardWillHide, selector: #selector(keyboardWillHide))
+        subscribeToNotification(.UIKeyboardDidShow, selector: #selector(keyboardDidShow))
+        subscribeToNotification(.UIKeyboardDidHide, selector: #selector(keyboardDidHide))
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        unsubscribeFromAllNotifications()
     }
 
     @IBAction func loginPressed(_ sender: Any) {
-        setUIEnabled(false)
+     
         loginUser()
     }
     
     private func loginUser() {
         
-        //        let userName = userNameTextField.text
-        //        let password = passwordTextField.text
-        
-        UdacityClient.sharedInstance().authenticateUser(userName: "aniket.ghode@gmail.com", password: "cue51&mint") { (success, errorString) in
-            if success {
-                self.completeLogin()
-            } else {
-                performUIUpdatesOnMain {
+        if userNameTextField.text!.isEmpty {
+            showError("Username can't be empty")
+            return
+        }
+        if passwordTextField.text!.isEmpty {
+            showError("Password can't be empty")
+            return
+        }
+        setUIEnabled(false)
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
+        UdacityClient.sharedInstance().authenticateUser(userName: userNameTextField.text!, password: passwordTextField.text!) { (success, errorString) in
+            performUIUpdatesOnMain {
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                if success {
+                    self.completeLogin()
+                } else {
                     self.showError(errorString!)
                 }
             }
-            self.setUIEnabled(true)
         }
     }
     
     private func completeLogin() {
-        performUIUpdatesOnMain {
-            self.setUIEnabled(true)
-            let controller = self.storyboard!.instantiateViewController(withIdentifier: "OnTheMapNavigationController") as! UINavigationController
-            self.present(controller, animated: true, completion: nil)
-        }
+        self.setUIEnabled(true)
+        let controller = self.storyboard!.instantiateViewController(withIdentifier: "OnTheMapNavigationController") as! UINavigationController
+        self.present(controller, animated: true, completion: nil)
     }
     
     private func showError(_ errorMessage: String) {
@@ -77,6 +90,66 @@ class LoginViewController: UIViewController {
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - LoginViewController: UITextFieldDelegate
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    // MARK: UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // MARK: Show/Hide Keyboard
+    
+    func keyboardWillShow(_ notification: Notification) {
+        if !keyboardOnScreen {
+            // Move View just enough to show the login button
+            view.frame.origin.y -= loginButton.frame.origin.y + 20.0
+        }
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        if keyboardOnScreen {
+            view.frame.origin.y = 0
+        }
+    }
+    
+    func keyboardDidShow(_ notification: Notification) {
+        keyboardOnScreen = true
+    }
+    
+    func keyboardDidHide(_ notification: Notification) {
+        keyboardOnScreen = false
+    }
+    
+    private func keyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = (notification as NSNotification).userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
+    }
+    
+    private func resignIfFirstResponder(_ textField: UITextField) {
+        if textField.isFirstResponder {
+            textField.resignFirstResponder()
+        }
+    }
+}
+
+// MARK: - LoginViewController (Notifications)
+
+private extension LoginViewController {
+    
+    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
+    }
+    
+    func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

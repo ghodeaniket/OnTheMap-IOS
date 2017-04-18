@@ -11,29 +11,43 @@ import MapKit
 
 class PostInformationViewController: UIViewController {
 
+    // MARK: Properties
     
+    var keyboardOnScreen = false
     var location: CLPlacemark?
+    
+    // MARK: Outlets
+    
     @IBOutlet weak var locationTextField: UITextField!
+    @IBOutlet weak var findLocationButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        subscribeToNotification(.UIKeyboardWillShow, selector: #selector(keyboardWillShow))
+        subscribeToNotification(.UIKeyboardWillHide, selector: #selector(keyboardWillHide))
+        subscribeToNotification(.UIKeyboardDidShow, selector: #selector(keyboardDidShow))
+        subscribeToNotification(.UIKeyboardDidHide, selector: #selector(keyboardDidHide))
     }
     
     @IBAction func findLocationOnMap(_ sender: Any) {
-        guard let searchString = locationTextField.text else {
+        if locationTextField.text!.isEmpty {
             print("Empty string for location")
             displayError("Please enter location")
             return
         }
         
-        getLocationData(fromSearchString: searchString) { (success, placeMark, errorString) in
-            if (success) {
-                self.location = placeMark
-                self.performSegue(withIdentifier: "findLocation", sender: self)
-            } else {
-                self.displayError(errorString)
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
+        
+        getLocationData(fromSearchString: locationTextField.text!) { (success, placeMark, errorString) in            
+            performUIUpdatesOnMain {
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                if (success) {
+                    self.location = placeMark
+                    self.performSegue(withIdentifier: "findLocation", sender: self)
+                } else {
+                    self.displayError(errorString)
+                }
             }
         }
     }
@@ -71,6 +85,8 @@ class PostInformationViewController: UIViewController {
 //MARK:- TextField Delegate
 extension PostInformationViewController: UITextFieldDelegate {
     
+    // MARK: UITextFieldDelegate
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = ""
     }
@@ -78,5 +94,53 @@ extension PostInformationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+        
+    // MARK: Show/Hide Keyboard
+    
+    func keyboardWillShow(_ notification: Notification) {
+        if !keyboardOnScreen {
+            // Move View just enough to show the Find Location button
+            view.frame.origin.y -= findLocationButton.frame.origin.y + 20.0
+        }
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        if keyboardOnScreen {
+            view.frame.origin.y = 0
+        }
+    }
+    
+    func keyboardDidShow(_ notification: Notification) {
+        keyboardOnScreen = true
+    }
+    
+    func keyboardDidHide(_ notification: Notification) {
+        keyboardOnScreen = false
+    }
+    
+    private func keyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = (notification as NSNotification).userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
+    }
+    
+    private func resignIfFirstResponder(_ textField: UITextField) {
+        if textField.isFirstResponder {
+            textField.resignFirstResponder()
+        }
+    }
+}
+
+// MARK: - PostInformationViewController (Notifications)
+
+private extension PostInformationViewController {
+    
+    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
+    }
+    
+    func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
     }
 }

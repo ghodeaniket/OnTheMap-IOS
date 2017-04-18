@@ -15,22 +15,23 @@ class StudentInfoMapViewController: UIViewController {
     // is set up as the map view's delegate.
     @IBOutlet weak var mapView: MKMapView!
     
-    var appDelegate : AppDelegate!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
         
-        UdacityClient.sharedInstance().getStudentLocations { (success, studentsInfo, errorString) in
-            if(success){
-                performUIUpdatesOnMain {
+        UdacityClient.sharedInstance().getStudentLocations { (success, studentsInfo, errorString) in            
+            performUIUpdatesOnMain {
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                if success {
                     self.addMapLocations(studentsInfo!)
+                }
+                else {
+                    self.showError("Error occured while retrieving student locations.")
                 }
             }
         }
@@ -39,6 +40,15 @@ class StudentInfoMapViewController: UIViewController {
  
     
     // MARK: Helpers
+    
+    private func showError(_ errorMessage: String) {
+        let alert = UIAlertController(title: "On The Map", message: errorMessage, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default) { (alertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
     
     private func addMapLocations(_ studentsInformation: [UdacityStudentInformation]) {
         

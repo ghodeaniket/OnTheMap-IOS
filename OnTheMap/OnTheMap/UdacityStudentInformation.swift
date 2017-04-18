@@ -9,19 +9,6 @@
 import Foundation
 
 struct UdacityStudentInformation {
-    /*
-     createdAt = "2016-07-21T19:37:53.388Z";
-     firstName = Salvador;
-     lastName = Villa;
-     latitude = "44.9707178275793";
-     longitude = "-93.26195875000001";
-     mapString = Minneapolis;
-     mediaURL = "www.google.com";
-     objectId = AJvQglDt6u;
-     uniqueKey = 4172999640;
-     updatedAt = "2016-07-21T19:45:49.133Z";
-     
-    */
     
     let firstName: String
     let lastName: String
@@ -30,19 +17,21 @@ struct UdacityStudentInformation {
     let mapString: String
     let mediaURL: String
     let updatedAt: String
+    let objectID: String
     
     // MARK: Initializers
     
     // construct a UdacityStudentInformation from a dictionary
     
     init(dictionary: [String: AnyObject]) {
-        firstName = dictionary[UdacityParseClient.JSONResponseKeys.FirstName] as! String
-        lastName = dictionary[UdacityParseClient.JSONResponseKeys.LastName] as! String
-        longitude = dictionary[UdacityParseClient.JSONResponseKeys.Longitude] as! Double
-        lattitude = dictionary[UdacityParseClient.JSONResponseKeys.Lattitude] as! Double
-        mapString = dictionary[UdacityParseClient.JSONResponseKeys.MapString] as! String
-        mediaURL = dictionary[UdacityParseClient.JSONResponseKeys.MediaURL] as! String
-        updatedAt = dictionary[UdacityParseClient.JSONResponseKeys.UpdatedAt] as! String
+        firstName = dictionary[StudentInformationKeys.FirstName] as! String
+        lastName = dictionary[StudentInformationKeys.LastName] as! String
+        longitude = dictionary[StudentInformationKeys.Longitude] as! Double
+        lattitude = dictionary[StudentInformationKeys.Lattitude] as! Double
+        mapString = dictionary[StudentInformationKeys.MapString] as! String
+        mediaURL = dictionary[StudentInformationKeys.MediaURL] as! String
+        updatedAt = dictionary[StudentInformationKeys.UpdatedAt] as! String
+        objectID = dictionary[StudentInformationKeys.ObjectID] as! String
     }
     
     static func studentInformationFromResults(_ results: [[String: AnyObject]]) -> [UdacityStudentInformation] {
@@ -52,6 +41,18 @@ struct UdacityStudentInformation {
             studentsInformation.append(UdacityStudentInformation(dictionary: result))
         }
         return studentsInformation
+    }
+    
+    
+    struct StudentInformationKeys {
+        static let FirstName                 = "firstName"
+        static let LastName                  = "lastName"
+        static let Longitude                 = "longitude"
+        static let Lattitude                 = "latitude"
+        static let MapString                 = "mapString"
+        static let MediaURL                  = "mediaURL"
+        static let UpdatedAt                 = "updatedAt"
+        static let ObjectID                  = "objectId"
     }
     
 }
