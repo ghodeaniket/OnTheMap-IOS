@@ -114,7 +114,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="XHE-Qz-zQS">
                             <connections>
-                                <segue destination="Y9s-lM-i0f" kind="show" id="ik7-lh-UYz"/>
+                                <action selector="addStudentLocation:" destination="pJf-M0-t0h" id="kfd-5e-k7j"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -126,6 +126,7 @@
                     <connections>
                         <segue destination="94O-Dj-KZc" kind="relationship" relationship="viewControllers" id="BFw-c4-4Pl"/>
                         <segue destination="e5G-h0-V07" kind="relationship" relationship="viewControllers" id="u9U-gh-jaw"/>
+                        <segue destination="Y9s-lM-i0f" kind="show" identifier="AddStudentLocation" id="rYx-5z-qoR"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jyh-zn-e3H" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -217,6 +218,9 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Y9s-lM-i0f" id="edz-WL-GVK"/>
+                                        </connections>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TT9-tL-KaF">
                                         <rect key="frame" x="0.0" y="364" width="375" height="182"/>
@@ -307,6 +311,9 @@
                                                 <subviews>
                                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="sB4-Uf-F4Y">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="353"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="LfV-PU-e6l" id="4WI-yY-RuI"/>
+                                                        </connections>
                                                     </mapView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1uA-tj-UUC">
                                                         <rect key="frame" x="115" y="285" width="144" height="42"/>
@@ -343,7 +350,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="locationTextField" destination="ArS-KY-vRF" id="GVi-qz-lun"/>
+                        <outlet property="locationDescriptionTextfield" destination="ArS-KY-vRF" id="6JS-aW-0dw"/>
+                        <outlet property="mapView" destination="sB4-Uf-F4Y" id="MCF-je-yjO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Usm-mF-pbl" userLabel="First Responder" sceneMemberID="firstResponder"/>

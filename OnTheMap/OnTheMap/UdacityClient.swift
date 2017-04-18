@@ -21,6 +21,8 @@ class UdacityClient: NSObject {
     var firstName: String? = nil
     var lastName: String? = nil
     
+    var hasAddedLocation: Bool = false
+    
     
     // MARK: GET
     
@@ -46,7 +48,7 @@ class UdacityClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
+                sendError("There was an error with your request: \(String(describing: error))")
                 return
             }
             
@@ -81,17 +83,23 @@ class UdacityClient: NSObject {
     
     // MARK: POST
     
-    func taskForPOSTMethod(forParseClient parseClient: Bool, method: String, parameters: [String:AnyObject], jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForPOSTMethod(forParseClient parseClient: Bool, method: String, parameters: [String:AnyObject]?, jsonBody: String, completionHandlerForPOST: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
-        /* 1. Set the parameters */
-        var parametersWithApiKey = parameters
-        
-        /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: udacityURLFromParameters(forParseClient: parseClient, parameters: parameters, withPathExtension: method))
+        /* 2/3. Build the URL, Configure the request, pass parameters as nil for POST requests */
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(forParseClient: parseClient, parameters: nil, withPathExtension: method))
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+        //request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+        
+        if let parameters = parameters {
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+            } catch {
+                let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(parameters)'"]
+                completionHandlerForPOST(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+            }
+        }
         
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
@@ -104,7 +112,7 @@ class UdacityClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error)")
+                sendError("There was an error with your request: \(String(describing: error))")
                 return
             }
             
@@ -163,23 +171,25 @@ class UdacityClient: NSObject {
     }
     
     // create a URL from parameters
-    private func udacityURLFromParameters(_ parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
+    private func udacityURLFromParameters(_ parameters: [String:AnyObject]?, withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
         components.scheme = Constants.ApiScheme
         components.host = Constants.ApiHost
         components.path = Constants.ApiPath + (withPathExtension ?? "")
         components.queryItems = [URLQueryItem]()
-        
-        for (key, value) in parameters {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
-            components.queryItems!.append(queryItem)
+        if let parameters = parameters {
+            for (key, value) in parameters {
+                let queryItem = URLQueryItem(name: key, value: "\(value)")
+                components.queryItems!.append(queryItem)
+            }
         }
+        
         
         return components.url!
     }
     
-    func udacityURLFromParameters(forParseClient parseClient: Bool, parameters: [String:AnyObject], withPathExtension: String? = nil) -> URL {
+    func udacityURLFromParameters(forParseClient parseClient: Bool, parameters: [String:AnyObject]?, withPathExtension: String? = nil) -> URL {
         
         var components = URLComponents()
         components.scheme = parseClient ? UdacityParseClient.Constants.ApiScheme : UdacityClient.Constants.ApiScheme
@@ -188,9 +198,11 @@ class UdacityClient: NSObject {
         
         components.queryItems = [URLQueryItem]()
         
-        for (key, value) in parameters {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
-            components.queryItems!.append(queryItem)
+        if let parameters = parameters {
+            for (key, value) in parameters {
+                let queryItem = URLQueryItem(name: key, value: "\(value)")
+                components.queryItems!.append(queryItem)
+            }
         }
         
         return components.url!
