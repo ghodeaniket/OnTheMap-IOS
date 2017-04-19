@@ -10,9 +10,6 @@ import UIKit
 
 class StudentInfoTableViewController: UITableViewController {
 
-    // MARK: Properties
-    var studentsInformation = [UdacityStudentInformation]()
-    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -22,12 +19,11 @@ class StudentInfoTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        UdacityClient.sharedInstance().getStudentLocations { (success, studentsInfo, errorString) in
+        UdacityClient.sharedInstance().getStudentLocations { (success, errorString) in
             
             performUIUpdatesOnMain {
                 ActivityIndicator.sharedInstance().stopActivityIndicator(self)
                 if success {
-                    self.studentsInformation = studentsInfo!
                     self.tableView.reloadData()
                 }
                 else {
@@ -57,14 +53,14 @@ extension StudentInfoTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return studentsInformation.count
+        return StudentDataSource.sharedInstance.studentData.count
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "studentInformation", for: indexPath)
         
-        let studentInformation = studentsInformation[indexPath.row]
+        let studentInformation = StudentDataSource.sharedInstance.studentData[indexPath.row]
         
         let studentName = "\(studentInformation.firstName) \(studentInformation.lastName)"
         
@@ -77,11 +73,14 @@ extension StudentInfoTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let app = UIApplication.shared
-        let student = self.studentsInformation[indexPath.row]
+        let student = StudentDataSource.sharedInstance.studentData[indexPath.row]
         if let url = URL(string: student.mediaURL) {
-            app.open(url, options: [:], completionHandler: nil)
+            app.open(url, options: [:], completionHandler: { (succes) in
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            })
         } else {
             showError("Not a valid URL")
         }
+        
     }
 }

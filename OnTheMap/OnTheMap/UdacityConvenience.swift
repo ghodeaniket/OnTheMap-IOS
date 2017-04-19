@@ -56,8 +56,8 @@ extension UdacityClient {
         
         _ = taskForPOSTMethod(forParseClient: false, method: method, parameters: parameters as [String : AnyObject], completionHandlerForPOST: { (results, error) in
             if let error = error {
-                print(error)
-                completionHandlerForSession(false, nil, nil, "Login failed (Post Session to Udacity)")
+                print(error.localizedDescription)
+                completionHandlerForSession(false, nil, nil, "Login failed (\(error.localizedDescription))")
             } else {
                 if let accountInfo = results?[JSONResponseKeys.Account] as? [String: AnyObject]?{
                     if let accountKey = accountInfo![JSONResponseKeys.Key] as? String? {
@@ -66,19 +66,19 @@ extension UdacityClient {
                                 completionHandlerForSession(true, sessionID, accountKey, nil)
                             } else {
                                 print("Could not find \(JSONResponseKeys.sessionID) in \(String(describing: sessionInfo))")
-                                completionHandlerForSession(false, nil, nil, "Login Failed (Post Session to Udacity)")
+                                completionHandlerForSession(false, nil, nil, "Login Failed (sessionID)")
                             }
                         } else {
                             print("Could not find \(JSONResponseKeys.Session) in \(String(describing: results))")
-                            completionHandlerForSession(false, nil, nil, "Login Failed (Post Session to Udacity)")
+                            completionHandlerForSession(false, nil, nil, "Login Failed (Session)")
                         }
                     } else {
                         print("Could not find \(JSONResponseKeys.Key) in \(String(describing: accountInfo))")
-                        completionHandlerForSession(false, nil, nil, "Login Failed (Post Session to Udacity)")
+                        completionHandlerForSession(false, nil, nil, "Login Failed (Key)")
                     }
                 } else {
                      print("Could not find \(JSONResponseKeys.Account) in \(String(describing: results))")
-                    completionHandlerForSession(false, nil, nil, "Login Failed (Post Session to Udacity)")
+                    completionHandlerForSession(false, nil, nil, "Login Failed (Account)")
                 }
             }
         })
@@ -113,25 +113,39 @@ extension UdacityClient {
                 }
             }
         })
+    }
+    
+    func logoutUserSession(completionHandlerForLogoutUser: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+        
+        let method = Methods.Session
+        
+        _ = taskForDELETEMethod(forParseClient: false, method: method, completionHandlerForDELETE: { (results, error) in
+            if let error = error {
+                print(error)
+                completionHandlerForLogoutUser(false, "Error while logging out.")
+            } else {
+                completionHandlerForLogoutUser(true, nil)
+            }
+        })
         
     }
     
-    func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ success: Bool, _ studentInformations: [UdacityStudentInformation]?, _ errorString: String?) -> Void) {
-        let parameters = ["limit": 100, "order": "updatedAt"] as [String : AnyObject]
+    func getStudentLocations(_ completionHandlerForStudentLocations: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+        let parameters = ["limit": 100, "order": "-updatedAt"] as [String : AnyObject]
    
         let method = Methods.StudentLocation
         
         _ = taskForGETMethod(forParseClient: true, method: method, parameters: parameters, completionHandlerForGET: { (results, error) in
             if let error = error {
                 print(error)
-                completionHandlerForStudentLocations(false, nil, "Error while retrieving Student Locations")
+                completionHandlerForStudentLocations(false, "Error while retrieving Student Locations")
             } else {
                 if let results = results?[JSONResponseKeys.StudentInformationResults] as? [[String: AnyObject]] {
-                    let studentsInfo = UdacityStudentInformation.studentInformationFromResults(results)
-                    completionHandlerForStudentLocations(true, studentsInfo, nil)
+                    StudentDataSource.sharedInstance.studentData = UdacityStudentInformation.studentInformationFromResults(results)
+                    completionHandlerForStudentLocations(true, nil)
                 } else {
                     print("Could not find \(JSONResponseKeys.StudentInformationResults) in \(String(describing: results))")
-                    completionHandlerForStudentLocations(false, nil, "Error while retrieving Student Locations")
+                    completionHandlerForStudentLocations(false, "Error while retrieving Student Locations")
                 }
                 
             }

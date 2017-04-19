@@ -35,6 +35,26 @@ class ManagerTabViewController: UITabBarController {
     }
     
     @IBAction func logout(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
+        UdacityClient.sharedInstance().logoutUserSession { (success, errorString) in
+            performUIUpdatesOnMain {
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                if success {
+                    self.dismiss(animated: true, completion: nil)
+                } else {
+                    self.showError(errorString ?? "Unknown error")
+                }
+            }
+            
+        }
+    }
+    
+    private func showError(_ errorMessage: String) {
+        let alert = UIAlertController(title: "On The Map", message: errorMessage, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default) { (alertAction) in
+            alert.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
     }
 }

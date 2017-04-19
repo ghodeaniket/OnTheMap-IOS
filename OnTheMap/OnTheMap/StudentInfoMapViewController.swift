@@ -24,11 +24,12 @@ class StudentInfoMapViewController: UIViewController {
         
         ActivityIndicator.sharedInstance().startActivityIndicator(self)
         
-        UdacityClient.sharedInstance().getStudentLocations { (success, studentsInfo, errorString) in            
+        UdacityClient.sharedInstance().getStudentLocations { (success, errorString) in
             performUIUpdatesOnMain {
                 ActivityIndicator.sharedInstance().stopActivityIndicator(self)
                 if success {
-                    self.addMapLocations(studentsInfo!)
+                    let studentsInfo = StudentDataSource.sharedInstance.studentData
+                    self.addMapLocations(studentsInfo)
                 }
                 else {
                     self.showError("Error occured while retrieving student locations.")
@@ -36,8 +37,6 @@ class StudentInfoMapViewController: UIViewController {
             }
         }
     }
-    
- 
     
     // MARK: Helpers
     

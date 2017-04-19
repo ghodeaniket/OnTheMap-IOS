@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2528C9681EA7394E00CE0564 /* StudentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2528C9671EA7394E00CE0564 /* StudentDataSource.swift */; };
 		252D4E0D1E9B51FA00470B90 /* StudentInfoMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E0C1E9B51FA00470B90 /* StudentInfoMapViewController.swift */; };
 		252D4E0F1E9B520E00470B90 /* StudentInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E0E1E9B520E00470B90 /* StudentInfoTableViewController.swift */; };
 		252D4E151E9B5F7800470B90 /* UdacityStudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D4E141E9B5F7800470B90 /* UdacityStudentInformation.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2528C9671EA7394E00CE0564 /* StudentDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentDataSource.swift; sourceTree = "<group>"; };
 		252D4E0C1E9B51FA00470B90 /* StudentInfoMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInfoMapViewController.swift; sourceTree = "<group>"; };
 		252D4E0E1E9B520E00470B90 /* StudentInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInfoTableViewController.swift; sourceTree = "<group>"; };
 		252D4E141E9B5F7800470B90 /* UdacityStudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudentInformation.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				252D4E141E9B5F7800470B90 /* UdacityStudentInformation.swift */,
+				2528C9671EA7394E00CE0564 /* StudentDataSource.swift */,
 				256C86DF1E96238E004B2690 /* UdacityClient.swift */,
 				256C86E11E9623AE004B2690 /* UdacityConstants.swift */,
 				252D4E1C1E9E43E500470B90 /* UdacityConvenience.swift */,
@@ -250,6 +253,7 @@
 				259AE9791E950CEC00BCDC7A /* BorderedButton.swift in Sources */,
 				254BB8441EA61B1500D76A7E /* ActivityIndicator.swift in Sources */,
 				259AE9621E95084400BCDC7A /* AppDelegate.swift in Sources */,
+				2528C9681EA7394E00CE0564 /* StudentDataSource.swift in Sources */,
 				256C86E21E9623AE004B2690 /* UdacityConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

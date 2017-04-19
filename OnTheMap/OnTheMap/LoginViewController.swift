@@ -67,10 +67,12 @@ class LoginViewController: UIViewController {
         ActivityIndicator.sharedInstance().startActivityIndicator(self)
         UdacityClient.sharedInstance().authenticateUser(userName: userNameTextField.text!, password: passwordTextField.text!) { (success, errorString) in
             performUIUpdatesOnMain {
+                self.setUIEnabled(true)
                 ActivityIndicator.sharedInstance().stopActivityIndicator(self)
                 if success {
                     self.completeLogin()
                 } else {
+                    self.passwordTextField.text = ""
                     self.showError(errorString!)
                 }
             }
@@ -79,6 +81,8 @@ class LoginViewController: UIViewController {
     
     private func completeLogin() {
         self.setUIEnabled(true)
+        userNameTextField.text = ""
+        passwordTextField.text = ""
         let controller = self.storyboard!.instantiateViewController(withIdentifier: "OnTheMapNavigationController") as! UINavigationController
         self.present(controller, animated: true, completion: nil)
     }

@@ -23,14 +23,26 @@ struct UdacityStudentInformation {
     
     // construct a UdacityStudentInformation from a dictionary
     
-    init(dictionary: [String: AnyObject]) {
-        firstName = dictionary[StudentInformationKeys.FirstName] as! String
-        lastName = dictionary[StudentInformationKeys.LastName] as! String
+    init?(dictionary: [String: AnyObject]) {
+        
+        // check if location information and objectID is absent, if it is then dont add it to the data source
+        guard (dictionary[StudentInformationKeys.Longitude] as? Double) != nil else {
+            return nil
+        }
+        guard (dictionary[StudentInformationKeys.Lattitude] as? Double) != nil else {
+            return nil
+        }
+        guard (dictionary[StudentInformationKeys.MediaURL] as? String) != nil else {
+            return nil
+        }
+        
+        firstName = dictionary[StudentInformationKeys.FirstName] as? String ?? " "
+        lastName = dictionary[StudentInformationKeys.LastName] as? String ?? " "
         longitude = dictionary[StudentInformationKeys.Longitude] as! Double
         lattitude = dictionary[StudentInformationKeys.Lattitude] as! Double
-        mapString = dictionary[StudentInformationKeys.MapString] as! String
+        mapString = dictionary[StudentInformationKeys.MapString] as? String ?? " "
         mediaURL = dictionary[StudentInformationKeys.MediaURL] as! String
-        updatedAt = dictionary[StudentInformationKeys.UpdatedAt] as! String
+        updatedAt = dictionary[StudentInformationKeys.UpdatedAt] as? String ?? " "
         objectID = dictionary[StudentInformationKeys.ObjectID] as! String
     }
     
@@ -38,7 +50,9 @@ struct UdacityStudentInformation {
         var studentsInformation = [UdacityStudentInformation]()
         // iterate through array of dictionaries, each StudentInformation is a dictionary
         for result in results {
-            studentsInformation.append(UdacityStudentInformation(dictionary: result))
+            if let studentInformation = UdacityStudentInformation(dictionary: result) {
+                studentsInformation.append(studentInformation)
+            }
         }
         return studentsInformation
     }
