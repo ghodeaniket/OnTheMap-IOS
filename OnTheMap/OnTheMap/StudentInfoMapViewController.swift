@@ -29,6 +29,8 @@ class StudentInfoMapViewController: UIViewController {
                 ActivityIndicator.sharedInstance().stopActivityIndicator(self)
                 if success {
                     let studentsInfo = StudentDataSource.sharedInstance.studentData
+                    // clear existing map pins
+                    self.mapView.removeAnnotations(self.mapView.annotations)
                     self.addMapLocations(studentsInfo)
                 }
                 else {
