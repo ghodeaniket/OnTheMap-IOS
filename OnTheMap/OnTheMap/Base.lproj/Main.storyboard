@@ -132,7 +132,6 @@
                     <connections>
                         <segue destination="94O-Dj-KZc" kind="relationship" relationship="viewControllers" id="BFw-c4-4Pl"/>
                         <segue destination="e5G-h0-V07" kind="relationship" relationship="viewControllers" id="u9U-gh-jaw"/>
-                        <segue destination="Y9s-lM-i0f" kind="show" identifier="AddStudentLocation" id="rYx-5z-qoR"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jyh-zn-e3H" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -188,11 +187,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WB0-5P-BbA">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="OBE-J6-yyE"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem id="arX-04-2of">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="eZL-Rk-NDA">
+                                            <connections>
+                                                <action selector="cancelButtonPressed:" destination="Y9s-lM-i0f" id="gDg-nO-Nls"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1gT-Rt-99p">
-                                <rect key="frame" x="0.0" y="64" width="375" height="546"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="615"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rne-BR-lPJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="182"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="205"/>
                                         <attributedString key="attributedText">
                                             <fragment content="Where are you ">
                                                 <attributes>
@@ -219,7 +233,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your location here" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wv7-HE-oVJ">
-                                        <rect key="frame" x="0.0" y="182" width="375" height="182"/>
+                                        <rect key="frame" x="0.0" y="205" width="375" height="205"/>
                                         <color key="backgroundColor" red="0.0" green="0.65265710361738194" blue="0.95254996827411165" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
@@ -229,13 +243,13 @@
                                         </connections>
                                     </textField>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="TT9-tL-KaF">
-                                        <rect key="frame" x="0.0" y="364" width="375" height="182"/>
+                                        <rect key="frame" x="0.0" y="410" width="375" height="205"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRu-bP-10Y">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="182"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="205"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="OOR-aK-mK2" customClass="BorderedButton" customModule="OnTheMap" customModuleProvider="target">
-                                                        <rect key="frame" x="50" y="73" width="275" height="36"/>
+                                                        <rect key="frame" x="50" y="84.5" width="275" height="36"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                         <state key="normal" title="Find on the Map"/>
                                                         <connections>
@@ -256,9 +270,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1gT-Rt-99p" firstAttribute="top" secondItem="kz0-l3-oQJ" secondAttribute="bottom" id="9IB-Rd-GcN"/>
                             <constraint firstItem="UPC-6S-IOc" firstAttribute="top" secondItem="1gT-Rt-99p" secondAttribute="bottom" constant="8" id="CvF-hO-uDc"/>
+                            <constraint firstAttribute="trailing" secondItem="WB0-5P-BbA" secondAttribute="trailing" id="NIn-uM-bLM"/>
                             <constraint firstItem="1gT-Rt-99p" firstAttribute="leading" secondItem="mqj-Gw-ndr" secondAttribute="leading" id="OsQ-4j-NIw"/>
+                            <constraint firstItem="WB0-5P-BbA" firstAttribute="top" secondItem="mqj-Gw-ndr" secondAttribute="top" id="RhY-H1-G6R"/>
+                            <constraint firstItem="1gT-Rt-99p" firstAttribute="top" secondItem="WB0-5P-BbA" secondAttribute="bottom" id="f6j-7k-ANN"/>
+                            <constraint firstItem="WB0-5P-BbA" firstAttribute="leading" secondItem="mqj-Gw-ndr" secondAttribute="leading" id="lBT-59-rO5"/>
                             <constraint firstAttribute="trailing" secondItem="1gT-Rt-99p" secondAttribute="trailing" id="zgX-ck-PAa"/>
                         </constraints>
                     </view>

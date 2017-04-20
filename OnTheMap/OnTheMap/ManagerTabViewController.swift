@@ -21,7 +21,8 @@ class ManagerTabViewController: UITabBarController {
             let alert: UIAlertController = UIAlertController(title: "", message: "You have already posted your location. Would you like to overwrite?", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Overwrite", style: .default, handler: { (action) in
-                self.performSegue(withIdentifier: "AddStudentLocation", sender: nil)
+                let postInformationVC = self.storyboard?.instantiateViewController(withIdentifier: "PostInformationViewController") as! PostInformationViewController
+                self.present(postInformationVC, animated: true, completion: nil)
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
@@ -30,7 +31,9 @@ class ManagerTabViewController: UITabBarController {
             
             self.present(alert, animated: true, completion: nil)
         } else {
-            performSegue(withIdentifier: "AddStudentLocation", sender: nil)
+            let postInformationVC = self.storyboard?.instantiateViewController(withIdentifier: "PostInformationViewController") as! PostInformationViewController
+            present(postInformationVC, animated: true, completion: nil)
+//            performSegue(withIdentifier: "AddStudentLocation", sender: nil)
         }
     }
     

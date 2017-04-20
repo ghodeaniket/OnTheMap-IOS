@@ -49,7 +49,7 @@ class UdacityClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
+                sendError("There was an error with your request: \(String(describing: error?.localizedDescription))")
                 return
             }
             
@@ -120,7 +120,7 @@ class UdacityClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
+                sendError("There was an error with your request: \(String(describing: error?.localizedDescription))")
                 return
             }
             
@@ -191,7 +191,7 @@ class UdacityClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
+                sendError("There was an error with your request: \(String(describing: error?.localizedDescription))")
                 return
             }
             
@@ -251,7 +251,7 @@ class UdacityClient: NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(String(describing: error))")
+                sendError("There was an error with your request: \(String(describing: error?.localizedDescription))")
                 return
             }
             

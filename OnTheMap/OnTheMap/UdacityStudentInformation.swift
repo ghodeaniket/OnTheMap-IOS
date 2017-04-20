@@ -36,8 +36,8 @@ struct UdacityStudentInformation {
             return nil
         }
         
-        firstName = dictionary[StudentInformationKeys.FirstName] as? String ?? " "
-        lastName = dictionary[StudentInformationKeys.LastName] as? String ?? " "
+        firstName = dictionary[StudentInformationKeys.FirstName] as? String ?? "First Name"
+        lastName = dictionary[StudentInformationKeys.LastName] as? String ?? "Last Name"
         longitude = dictionary[StudentInformationKeys.Longitude] as! Double
         lattitude = dictionary[StudentInformationKeys.Lattitude] as! Double
         mapString = dictionary[StudentInformationKeys.MapString] as? String ?? " "

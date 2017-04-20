@@ -51,7 +51,8 @@ class FindLocationViewController: UIViewController {
                 performUIUpdatesOnMain {
                     ActivityIndicator.sharedInstance().stopActivityIndicator(self)
                     if success {
-                        self.navigationController?.popToRootViewController(animated: true)
+                        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+//                        self.navigationController?.popToRootViewController(animated: true)
                     } else {
                         if let errorString = errorString {
                             self.showError(errorString)
